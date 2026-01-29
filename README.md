@@ -8,6 +8,11 @@ A simple, Python-based system to mark attendance using facial recognition. It us
 - **Real-Time Recognition**: Fast recognition using OpenCV and face_recognition.
 - **Local Database**: All data stored securely in MongoDB on your machine.
 
+
+**##Images**
+![Img 1](Screenshot 2026-01-29 161536.png)
+![Img 2](Screenshot 2026-01-29 161511.png)
+![Img 3](new_imag1.png)
 ## Prerequisites
 1.  **Python 3.8+** installed.
 2.  **MongoDB** installed and running locally on default port (27017).
