@@ -10,9 +10,13 @@ A simple, Python-based system to mark attendance using facial recognition. It us
 
 
 **##Images**
-![Img 1](Screenshot 2026-01-29 161536.png)
-![Img 2](Screenshot 2026-01-29 161511.png)
+![Img 1](img.png)
+![Img 2](img3.png)
 ![Img 3](new_imag1.png)
+
+**#video**
+https://drive.google.com/file/d/1AfKCHl3-wJjwM9ABJti6SYB3veB5eVbZ/view?usp=sharing
+
 ## Prerequisites
 1.  **Python 3.8+** installed.
 2.  **MongoDB** installed and running locally on default port (27017).
