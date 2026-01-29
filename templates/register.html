@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register User - Face Auth</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            display: flex;
+            gap: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .form-section {
+            flex: 1;
+            padding-right: 2rem;
+            border-right: 1px solid #eee;
+        }
+
+        .video-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .video-feed {
+            width: 100%;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            background: #000;
+            min-height: 240px;
+        }
+
+        #message {
+            margin-top: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Input Form -->
+        <div class="form-section">
+            <h2>Register New User</h2>
+            <div class="form-group">
+                <label for="user_id">User ID</label>
+                <input type="text" id="user_id" placeholder="e.g. 101">
+            </div>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="e.g. John Doe">
+            </div>
+            <button onclick="registerUser()">Capture & Save Face</button>
+            <div id="message"></div>
+            <a href="/" class="back-link">Back to Home</a>
+        </div>
+
+        <!-- Video Feed -->
+        <div class="video-section">
+            <label>Live Camera Feed</label>
+            <img src="{{ url_for('video_feed_register') }}" class="video-feed" alt="Video Feed">
+            <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">Ensure only one face is visible clearly.</p>
+        </div>
+    </div>
+
+    <script>
+        async function registerUser() {
+            const userId = document.getElementById('user_id').value;
+            const name = document.getElementById('name').value;
+            const msgDiv = document.getElementById('message');
+
+            if (!userId || !name) {
+                showMessage("Please enter both ID and Name.", false);
+                return;
+            }
+
+            showMessage("Capturing...", true); // Temp
+
+            try {
+                const response = await fetch('/api/register_save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId, name: name })
+                });
+
+                const result = await response.json();
+                showMessage(result.message, result.success);
+
+                if (result.success) {
+                    document.getElementById('user_id').value = '';
+                    document.getElementById('name').value = '';
+                }
+
+            } catch (error) {
+                showMessage("Error connecting to server.", false);
+            }
+        }
+
+        function showMessage(text, isSuccess) {
+            const msgDiv = document.getElementById('message');
+            msgDiv.style.display = 'block';
+            msgDiv.className = isSuccess ? 'success' : 'error';
+            msgDiv.innerText = text;
+        }
+    </script>
+</body>
+
+</html>
